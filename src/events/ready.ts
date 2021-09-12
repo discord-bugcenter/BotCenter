@@ -3,6 +3,7 @@ import { CustomClient } from '../client';
 import { BUG_CENTER_GUILD_ID } from '../utils';
 
 export function handleReady(bot: CustomClient): void {
+	bot.logger.debug('Received Ready event');
 	bot.logger.info(`Client is now identified as ${bot.client.user?.tag ?? 'N/A'}!`);
 
 	setInterval(() => {
