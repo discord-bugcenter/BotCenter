@@ -1,5 +1,5 @@
-import { createLogger, format, Logger, transports } from "winston";
-const { combine, timestamp, colorize, metadata, simple, errors, align } =
+import { createLogger, format, Logger, transports, } from 'winston';
+const { combine, timestamp, colorize, metadata, simple, errors, align, } =
   format;
 
 /**
@@ -8,22 +8,22 @@ const { combine, timestamp, colorize, metadata, simple, errors, align } =
  * @param shouldPrintDebug - whether or not we should log debug and trace messages
  * @returns
  */
-export function newLogger(label: string, shouldPrintDebug: boolean): Logger {
-  return createLogger({
-    defaultMeta: {
-      kind: label,
-    },
-    format: combine(
-      timestamp(),
-      colorize(),
-      metadata(),
-      simple(),
-      errors({
-        stack: true,
-      }),
-      align(),
-    ),
-    level: shouldPrintDebug ? "trace" : "info",
-    transports: [new transports.Console()],
-  });
+export function newLogger(label: string, shouldPrintDebug: boolean,): Logger {
+	return createLogger({
+		defaultMeta: {
+			kind: label,
+		},
+		format: combine(
+			timestamp(),
+			colorize(),
+			metadata(),
+			simple(),
+			errors({
+				stack: true,
+			},),
+			align(),
+		),
+		level: shouldPrintDebug ? 'trace' : 'info',
+		transports: [new transports.Console()],
+	},);
 }
