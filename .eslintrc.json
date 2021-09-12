@@ -1,3 +1,6 @@
 {
-  "extends": "marine/prettier/node"
+  "extends": "marine/node",
+  "rules": {
+    "comma-dangle": "off"
+  }
 }

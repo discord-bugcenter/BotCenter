@@ -1,14 +1,14 @@
-import { CommandInteraction } from "discord.js";
-import { Logger } from "winston";
+import { CommandInteraction } from 'discord.js';
+import { Logger } from 'winston';
 
 export interface Command {
-  readonly name: string;
-  readonly description: string;
-  readonly logger: Logger;
+	readonly name: string;
+	readonly description: string;
+	readonly logger: Logger;
 
-  /**
+	/**
    * Action to do when a Command Interaction is used
    * @param interaction The CommandInteraction
    */
-  do(interaction: CommandInteraction): Promise<void>;
+	do(interaction: CommandInteraction): Promise<void>;
 }
