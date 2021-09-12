@@ -1,13 +1,16 @@
 import { Client } from "discord.js";
 import { Logger } from "winston";
+import { CommandStore } from ".";
 import { newLogger } from "../utils";
 
 export class Bot {
   public client: Client;
   public logger: Logger;
+  public store: CommandStore;
 
   public constructor(public readonly token: string, debug: boolean) {
     this.logger = newLogger("bot", debug);
+    this.store = new CommandStore(debug);
 
     this.client = new Client({
       shards: 0,
