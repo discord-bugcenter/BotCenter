@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "format": "prettier --write src/*.{ts,js,json,yml,yaml}",
+    "format": "prettier --write src/**/*",
     "build": "tsc",
     "install": "yarn run build",
     "start": "yarn build/index.js"
