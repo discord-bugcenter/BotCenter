@@ -1,6 +1,7 @@
 import { Client } from 'discord.js';
 import { Logger } from 'winston';
 import { CommandStore } from '.';
+import { handleReady } from '../events';
 import { newLogger } from '../utils';
 
 export class CustomClient {
@@ -15,7 +16,7 @@ export class CustomClient {
 		this.client = new Client({
 			shards: 0,
 			shardCount: 1,
-			userAgentSuffix: ['bugcenter'],
+			userAgentSuffix: ['bug center'],
 			intents: [
 				'GUILDS',
 				'GUILD_MEMBERS',
@@ -37,7 +38,18 @@ export class CustomClient {
 			},
 		});
 
-		// TODO - initialize events
+		this._registerEvents();
+	}
+
+	private _registerEvents(): void {
+		this.logger.debug('Registering events...');
+
+		this.client.on('ready', () => {
+			handleReady(this);
+		});
+		this.logger.debug('Registered event: "Ready"!');
+
+		// TODO: Do event handlers and register them as listeners here
 	}
 
 	public async connect(): Promise<void> {
