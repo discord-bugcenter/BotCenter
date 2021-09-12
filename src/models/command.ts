@@ -1,7 +1,7 @@
 import { CommandInteraction } from "discord.js";
 import { Logger } from "winston";
 
-export interface ApplicationCommand {
+export interface Command {
   readonly name: string;
   readonly description: string;
   readonly logger: Logger;

@@ -40,9 +40,6 @@ export class Bot {
     // TODO - initialize events
   }
 
-  /**
-   * connect the client
-   */
   public async connect(): Promise<void> {
     this.logger.debug("Connecting client to the WebSocket...");
 

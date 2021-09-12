@@ -1,1 +1,1 @@
-export * from "./application_command";
+export * from "./command";
