@@ -1,0 +1,36 @@
+{
+  "name": "bot-center",
+  "version": "1.0.0",
+  "description": "Modern and optimized version of Bot Center",
+  "main": "build/index.js",
+  "repository": "git@github.com:discord-bugcenter/BotCenter.git",
+  "author": "n1c00o <git.n1c00o@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src/*.{ts,js,json,yml,yaml}",
+    "build": "tsc",
+    "install": "yarn run build",
+    "start": "yarn build/index.js"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.31.0",
+    "@typescript-eslint/parser": "4.31.0",
+    "eslint-config-marine": "9.0.6",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "prettier": "2.4.0",
+    "typescript": "4.4.3",
+    "eslint": "7.32.0"
+  },
+  "dependencies": {
+    "@discordjs/rest": "0.1.0-canary.0",
+    "bufferutil": "4.0.3",
+    "discord-api-types": "0.23.1",
+    "discord.js": "13.1.0",
+    "utf-8-validate": "5.0.5",
+    "zlib-sync": "0.1.7"
+  }
+}
