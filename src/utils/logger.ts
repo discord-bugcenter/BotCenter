@@ -23,7 +23,7 @@ export function newLogger(label: string, shouldPrintDebug: boolean,): Logger {
 			},),
 			align(),
 		),
-		level: shouldPrintDebug ? 'trace' : 'info',
+		level: shouldPrintDebug ? 'debug' : 'info',
 		transports: [new transports.Console()],
 	},);
 }
