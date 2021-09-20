@@ -1,7 +1,7 @@
-import { Client, VoiceState } from 'discord.js';
+import { Client, VoiceState, Interaction } from 'discord.js';
 import { Logger } from 'winston';
 import { CommandStore } from '.';
-import { handleReady, handleVoiceStateUpdate } from '../events';
+import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { newLogger } from '../utils';
 
 export class CustomClient {
@@ -53,6 +53,11 @@ export class CustomClient {
 			await handleVoiceStateUpdate(this, oldState, newState);
 		});
 		this.logger.debug('Registered event: "Voice State Update"!');
+
+		this.client.on('interactionCreate', async (interaction: Interaction) => {
+			await handleInteractionCreate(this, interaction);
+		});
+		this.logger.debug('Registered event: "Interaction Create"!');
 
 		// TODO: Do event handlers and register them as listeners here
 	}
