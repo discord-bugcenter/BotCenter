@@ -57,7 +57,7 @@ export class CustomClient {
 		this.client.on('interactionCreate', async (interaction: Interaction) => {
 			await handleInteractionCreate(this, interaction);
 		});
-		this.logger.debug('Registered event: "Voice State Update"!');
+		this.logger.debug('Registered event: "Interaction Create"!');
 
 		// TODO: Do event handlers and register them as listeners here
 	}
