@@ -5,5 +5,5 @@ if (!process.env.BOT_TOKEN) {
     process.exit();
 }
 
-let client: CustomClient = new CustomClient(process.env.BOT_TOKEN, true);
+let client: CustomClient = new CustomClient(process.env.BOT_TOKEN, false);
 client.connect()
