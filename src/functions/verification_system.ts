@@ -47,10 +47,10 @@ export async function verificationSystem(bot: CustomClient, interaction: Interac
     let selectedCaptchaValues: string[] = []
     const correctAnswer: string = getRandom(['rabbit', 'koala', 'cat', 'horse'])
     const captchaImages: Record<string, string> = {
-        'rabbit': './src/functions/ressources/rabbit.jpg',
-        'cat': './src/functions/ressources/cat.jpg',
-        'horse': './src/functions/ressources/horse.jpg',
-        'koala': './src/functions/ressources/koala.jpg'
+        'rabbit': './assets/rabbit.jpg',
+        'cat': './assets/cat.jpg',
+        'horse': './assets/horse.jpg',
+        'koala': './assets/koala.jpg'
     }
 
     const captchaSelector: MessageSelectMenu = new MessageSelectMenu()
