@@ -1,8 +1,9 @@
-import { ApplicationCommandPermissions, GuildApplicationCommandManager } from 'discord.js';
+import { ApplicationCommandNonOptionsData, ApplicationCommandOption, ApplicationCommandPermissions, ApplicationCommandSubCommandData, GuildApplicationCommandManager } from 'discord.js';
 import { Logger } from 'winston';
 import { CustomClient } from '.';
 import { Command } from '../models';
 import { BUG_CENTER_GUILD_ID, newLogger } from '../utils';
+import { ExtendedApplicationCommandOption } from '../models/command'
 
 export class CommandStore {
 	private readonly _commands: Map<string, Command>;
@@ -42,10 +43,41 @@ export class CommandStore {
 		
 		if (!applicationCommand) {
 			this.logger.debug(`Pushing command ${name} to Discord...`);
+
+			function transformOptions(options: ExtendedApplicationCommandOption[] | Command[]): ApplicationCommandOption[] {
+				let transformedOptions: ApplicationCommandOption[] = []
+				
+				for (const option of options) {
+					if (option instanceof Command) {
+						if (option.options[0] instanceof Command) {
+							transformedOptions.push({
+								type: 'SUB_COMMAND_GROUP',
+								name: option.name,
+								description: option.description,
+								options: transformOptions(option.options) as ApplicationCommandSubCommandData[] & ApplicationCommandOption[]
+							})
+						} else {
+							transformedOptions.push({
+								type: 'SUB_COMMAND',
+								name: option.name,
+								description: option.description,
+								options: transformOptions(option.options) as ApplicationCommandNonOptionsData[] & ApplicationCommandOption[]
+							})
+						}
+
+					} else {
+						transformedOptions.push(option);
+					}
+				}
+				return transformedOptions;
+			}
+
+			const options = transformOptions(command.options)
+			
 			await this.guildCommands?.create({
 				name: command.name,
 				description: command.description,
-				options: command.options
+				options: options
 			}).then(async applicationCommand => {
 				const permissions: ApplicationCommandPermissions[] = []
 				

@@ -3,7 +3,7 @@ import { Logger } from 'winston';
 import { CustomClient } from '../client';
 import { BUG_CENTER_GUILD_ID } from '../utils';
 
-type ExtendedApplicationCommandOption = ApplicationCommandOption & {
+export type ExtendedApplicationCommandOption = ApplicationCommandOption & {
 	default?: string | number | boolean | Role | Channel | User;
 	internalReference?: string;
 }
@@ -11,7 +11,7 @@ type ExtendedApplicationCommandOption = ApplicationCommandOption & {
 interface CommandParameters {
 	name: string;
 	description: string;
-	options?: ExtendedApplicationCommandOption[]; 
+	options?: ExtendedApplicationCommandOption[] | Command[]; 
 	allowedRoles?: Snowflake[];
 	deniedRoles?: Snowflake[];
 	allowedUsers?: Snowflake[];
@@ -21,7 +21,7 @@ interface CommandParameters {
 export abstract class Command {
 	readonly name: string;
 	readonly description: string;
-	readonly options: ExtendedApplicationCommandOption[] = [];
+	readonly options: ExtendedApplicationCommandOption[] | Command[] = [];
 
 	readonly allowedRoles: Snowflake[] = [];
 	readonly deniedRoles: Snowflake[] = [];
@@ -57,3 +57,4 @@ export abstract class Command {
 		return this.bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.commands.cache.filter(cmd => cmd.name == this.name).first();
 	};
 }
+

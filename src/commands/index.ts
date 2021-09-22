@@ -1,1 +1,1 @@
-export { Exemple } from "./global/test";
+export { GrandParentCommandExemple } from "./global/exemple";

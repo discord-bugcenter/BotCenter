@@ -4,7 +4,7 @@ import { CommandStore } from '.';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { newLogger } from '../utils';
 
-import { Exemple } from '../commands';
+import { GrandParentCommandExemple } from '../commands';
 
 export class CustomClient {
 	public client: Client;
@@ -71,7 +71,7 @@ export class CustomClient {
 	private async _registerCommands(): Promise<void> {
 		this.logger.debug('Registering commands...');
 
-		const command = new Exemple(this)
+		const command = new GrandParentCommandExemple(this)
 		await this.store.setCommand(command.name, command)
 	}
 
