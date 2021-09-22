@@ -1,4 +1,4 @@
-import { ButtonInteraction, CommandInteraction, Interaction } from 'discord.js';
+import { ButtonInteraction, Channel, CommandInteraction, Interaction, Role, User } from 'discord.js';
 import { CustomClient } from '../client';
 import { verificationSystem } from '../functions/verification_system'; 
 
@@ -11,15 +11,30 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 	}
 
 	if (interaction instanceof CommandInteraction) {
-		if(!bot.store.getCommand(interaction.commandName)) return
+		const storedCommand = bot.store.getCommand(interaction.commandName);
+
+		if(!storedCommand) return;
 		
 		try {
-			await bot.store.getCommand(interaction.commandName)?.do(interaction)
-		} catch (error) {
-			bot.logger.error(error);
-			interaction.reply({ content: 'There was an error while executing this command', ephemeral: true });
-		}
-	}
+			const args: Record<string, string | number | boolean | Role | Channel | User | undefined> = {}
 
-	
+			storedCommand.options.forEach(option => {
+				const chooseStrategy: Record<string, (name: string, required?: boolean) => any> = {
+					STRING: interaction.options.getString,
+					INTEGER: interaction.options.getInteger,
+					BOOLEAN: interaction.options.getBoolean,
+					USER: interaction.options.getUser,
+					CHANNEL: interaction.options.getChannel,
+					ROLE: interaction.options.getRole,
+					MENTIONABLE: interaction.options.getMentionable,
+					NUMBER: interaction.options.getNumber
+				}
+				const strategy = chooseStrategy[option.type].bind(interaction.options)
+
+				args[option.internalReference || option.name] = strategy(option.name) || option.default
+			})
+
+			await bot.store.getCommand(interaction.commandName)?.do(interaction, args);
+		} finally {}
+	}
 }
