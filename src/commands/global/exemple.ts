@@ -3,16 +3,38 @@ import { CustomClient } from "../../client";
 import { Command } from "../../models";
 
 
+export class GrandParentCommandExemple extends Command {
+    constructor(bot: CustomClient) {
+        super(bot, {
+            name: 'grandparent',
+            description: "Ceci est la commande grand-parente.",
+            options: [new ParentCommandExemple(bot)],
+            allowedRoles: ['595219959060103198']
+        })
+    }
+
+}
+
+class ParentCommandExemple extends Command {
+    constructor(bot: CustomClient) {
+        super(bot, {
+            name: 'parent',
+            description: "Ceci est la commande parente.",
+            options: [new ChildCommandExemple(bot)],
+        })
+    }
+
+}
+
 interface Arguments {
     text: string;
     optional: number;
 }
-
-export class Exemple extends Command {
+class ChildCommandExemple extends Command {
     constructor(bot: CustomClient) {
         super(bot, {
-            name: 'exemple',
-            description: "Cette commande est une commande d'exemple.",
+            name: 'child',
+            description: "Ceci est la commande enfant.",
             options: [
                 {
                     name: 'texte',
@@ -28,10 +50,8 @@ export class Exemple extends Command {
                     required: false,
                     default: 1
                 }
-            ],
-            allowedRoles: ['595219959060103198']
+            ]
         })
-
     }
 
     async do(interaction: CommandInteraction, args: Arguments): Promise<void> {
