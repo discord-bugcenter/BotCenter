@@ -4,6 +4,8 @@ import { CommandStore } from '.';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { newLogger } from '../utils';
 
+import { Exemple } from '../commands';
+
 export class CustomClient {
 	public client: Client;
 	public logger: Logger;
@@ -11,7 +13,7 @@ export class CustomClient {
 
 	public constructor(public readonly token: string, debug: boolean) {
 		this.logger = newLogger('bot', debug);
-		this.store = new CommandStore(debug);
+		this.store = new CommandStore(this, debug);
 
 		this.client = new Client({
 			shards: 0,
@@ -44,7 +46,11 @@ export class CustomClient {
 	private _registerEvents(): void {
 		this.logger.debug('Registering events...');
 
-		this.client.on('ready', () => {
+		this.client.on('ready', async () => {
+			await this.store.fetchCommands();
+			await this._registerCommands();
+			await this.store.cleanCommands();
+
 			handleReady(this);
 		});
 		this.logger.debug('Registered event: "Ready"!');
@@ -60,6 +66,13 @@ export class CustomClient {
 		this.logger.debug('Registered event: "Interaction Create"!');
 
 		// TODO: Do event handlers and register them as listeners here
+	}
+
+	private async _registerCommands(): Promise<void> {
+		this.logger.debug('Registering commands...');
+
+		const command = new Exemple(this)
+		await this.store.setCommand(command.name, command)
 	}
 
 	public async connect(): Promise<void> {
