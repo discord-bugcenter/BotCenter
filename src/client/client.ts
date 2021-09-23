@@ -11,9 +11,9 @@ export class CustomClient {
 	public logger: Logger;
 	public store: CommandStore;
 
-	public constructor(public readonly token: string, debug: boolean) {
+	public constructor(public readonly token: string, syncSlash: boolean, debug: boolean) {
 		this.logger = newLogger('bot', debug);
-		this.store = new CommandStore(this, debug);
+		this.store = new CommandStore(this, syncSlash, debug);
 
 		this.client = new Client({
 			shards: 0,
@@ -49,7 +49,7 @@ export class CustomClient {
 		this.client.on('ready', async () => {
 			await this.store.fetchCommands();
 			await this._registerCommands();
-			await this.store.cleanCommands();
+			if (this.store.syncSlash) await this.store.cleanCommands();
 
 			handleReady(this);
 		});
