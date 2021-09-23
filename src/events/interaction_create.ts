@@ -18,18 +18,18 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 
 		const subcommandGroup = interaction.options.getSubcommandGroup()
 		if (subcommandGroup) {
-			storedCommand = (storedCommand.options as Command[]).find(option => option.name === subcommandGroup) as Command;
+			storedCommand = storedCommand.subCommands?.find(option => option.name === subcommandGroup) as Command;
 		}
 
 		const subcommand = interaction.options.getSubcommand()
 		if (subcommand) {
-			storedCommand = (storedCommand.options as Command[]).find(option => option.name === subcommand) as Command;
+			storedCommand = storedCommand.subCommands?.find(option => option.name === subcommand) as Command;
 		}
 		
 		try {
 			const args: Record<string, string | number | boolean | Role | Channel | User | undefined> = {}
 
-			storedCommand.options.forEach(option => {
+			storedCommand.extendedOptions?.forEach(option => {
 				if (option instanceof Command) return
 				
 				const chooseStrategy: Record<string, (name: string, required?: boolean) => any> = {
@@ -48,6 +48,9 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 			})
 
 			await storedCommand.do(interaction, args);
-		} finally {}
+		} catch (error) {
+			bot.logger.error(error);
+			interaction.reply({ content: 'There was an error while executing this command', ephemeral: true });
+		}
 	}
 }

@@ -1,18 +1,20 @@
-import { ApplicationCommandNonOptionsData, ApplicationCommandOption, ApplicationCommandPermissions, ApplicationCommandSubCommandData, GuildApplicationCommandManager } from 'discord.js';
+import { ApplicationCommandPermissions, GuildApplicationCommandManager } from 'discord.js';
 import { Logger } from 'winston';
 import { CustomClient } from '.';
 import { Command } from '../models';
 import { BUG_CENTER_GUILD_ID, newLogger } from '../utils';
-import { ExtendedApplicationCommandOption } from '../models/command'
+
 
 export class CommandStore {
 	private readonly _commands: Map<string, Command>;
 	private readonly bot: CustomClient;
+	public syncSlash: boolean;
 	public logger: Logger;
 
-	public constructor(bot: CustomClient,  debug: boolean) {
+	public constructor(bot: CustomClient,  syncSlash: boolean, debug: boolean) {
 		this._commands = new Map<string, Command>();
-		this.bot = bot
+		this.bot = bot;
+		this.syncSlash = syncSlash;
 		this.logger = newLogger('command_store', debug);
 	}
 
@@ -38,46 +40,14 @@ export class CommandStore {
 
 	public async setCommand(name: string, command: Command): Promise<Command> {
 		this.logger.debug(`Setting command ${name}...`);
-
-		const applicationCommand = command.applicationCommand
 		
-		if (!applicationCommand) {
+		if (this.syncSlash) {
 			this.logger.debug(`Pushing command ${name} to Discord...`);
-
-			function transformOptions(options: ExtendedApplicationCommandOption[] | Command[]): ApplicationCommandOption[] {
-				let transformedOptions: ApplicationCommandOption[] = []
-				
-				for (const option of options) {
-					if (option instanceof Command) {
-						if (option.options[0] instanceof Command) {
-							transformedOptions.push({
-								type: 'SUB_COMMAND_GROUP',
-								name: option.name,
-								description: option.description,
-								options: transformOptions(option.options) as ApplicationCommandSubCommandData[] & ApplicationCommandOption[]
-							})
-						} else {
-							transformedOptions.push({
-								type: 'SUB_COMMAND',
-								name: option.name,
-								description: option.description,
-								options: transformOptions(option.options) as ApplicationCommandNonOptionsData[] & ApplicationCommandOption[]
-							})
-						}
-
-					} else {
-						transformedOptions.push(option);
-					}
-				}
-				return transformedOptions;
-			}
-
-			const options = transformOptions(command.options)
 			
 			await this.guildCommands?.create({
 				name: command.name,
 				description: command.description,
-				options: options
+				options: command.options
 			}).then(async applicationCommand => {
 				const permissions: ApplicationCommandPermissions[] = []
 				
