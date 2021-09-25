@@ -4,10 +4,9 @@ import { BUG_CENTER_GUILD_ID } from '../utils';
 import { getRandom, shuffle } from '../utils';
 
 
-export async function verificationSystem(bot: CustomClient, interaction: Interaction): Promise<void> {
+export async function verificationSystem(bot: CustomClient, interaction: ButtonInteraction): Promise<void> {
 	bot.logger.debug('Received InteractionCreate event');
     
-    if (!(interaction instanceof ButtonInteraction)) return
     if (interaction.customId !== 'verification_start') return
 
     const member: GuildMember | undefined = await bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch(interaction.user.id);
