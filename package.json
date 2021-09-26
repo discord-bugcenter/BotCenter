@@ -10,7 +10,6 @@
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "format": "prettier --write src/**/*",
     "build": "tsc",
     "start": "yarn build/index.js"
   },
@@ -18,8 +17,7 @@
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
     "eslint": "7.32.0",
-    "eslint-config-marine": "9.0.6",
-    "typescript": "4.4.3"
+    "eslint-config-marine": "9.0.6"
   },
   "dependencies": {
     "@discordjs/builders": "0.6.0",
@@ -27,6 +25,7 @@
     "bufferutil": "4.0.3",
     "discord-api-types": "0.23.1",
     "discord.js": "13.1.0",
+    "typescript": "4.4.3",
     "utf-8-validate": "5.0.5",
     "winston": "^3.3.3",
     "zlib-sync": "0.1.7"
