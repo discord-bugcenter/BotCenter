@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  bot:
+    build: .
+    network:
+      - bot-network
+    depends-on:
+      - pg
+    environment:
+      BOT_TOKEN: ${BOTCENTER_BOT_TOKEN}
+  pg:
+    image: "postgres:13-alpine"
+    environment: 
+      POSTGRES_PASSWORD: ${BOTCENTER_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${BOTCENTER_POSTGRES_USER}
+      POSTGRES_DB: ${BOTCENTER_POSTGRES_DB}
+
+networks:
+  bot-network:
+volumes:
+  db-volume:
