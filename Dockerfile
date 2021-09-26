@@ -1,10 +1,9 @@
-FROM node:16-alpine AS build
-WORKDIR /home/botcenter
+FROM node:16 AS build
+WORKDIR /app
 COPY . .
 RUN yarn install --production && \
   yarn run build
 
 FROM gcr.io/distroless/nodejs:10
-WORKDIR /home/botcenter
-COPY --from=build /home/botcenter/ /app
+COPY --from=build /app/build /app/assets /app/
 CMD [ "./build/index.js" ]
