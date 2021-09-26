@@ -1,7 +1,7 @@
 import { CustomClient } from "./client";
 
-if (!process.env.BOT_TOKEN) {
-    console.log('The BOT_TOKEN environnement variable is missing.')
+if (!process.env.BOT_TOKEN || !process.env.POSTGRES_PASSWORD) {
+    console.log('The BOT_TOKEN or/and the POSTGRES_PASSWORD environnement variable is missing.')
     process.exit();
 }
 
