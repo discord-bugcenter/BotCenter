@@ -1,6 +1,7 @@
 import { CommandInteraction } from "discord.js";
 import { CustomClient } from "../../client";
 import { Command } from "../../models";
+import { __ } from "../../utils/i18n";
 
 
 export class GrandParentCommandExemple extends Command {
@@ -55,7 +56,7 @@ class ChildCommandExemple extends Command {
     }
 
     async do(interaction: CommandInteraction, args: Arguments): Promise<void> {
-        await interaction.reply(args.text.repeat(args.optional))
+        await interaction.reply(__('Here is your text : {{text}}', {text: args.text.repeat(args.optional)}))
     }
     
 }
