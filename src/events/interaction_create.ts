@@ -2,10 +2,14 @@ import { ButtonInteraction, Channel, CommandInteraction, Interaction, Role, User
 import { CustomClient } from '../client';
 import { verificationSystem } from '../functions/verification_system'; 
 import { Command } from '../models';
+import { BUG_CENTER_GUILD_ID } from '../utils';
 
 
 export async function handleInteractionCreate(bot: CustomClient, interaction: Interaction): Promise<void> {
 	bot.logger.debug('Received InteractionCreate event');
+
+	const member = await bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch(interaction.user.id)
+	if (member) bot.setLocale(member)
 
 	if (interaction instanceof ButtonInteraction) {
 		await verificationSystem(bot, interaction);
