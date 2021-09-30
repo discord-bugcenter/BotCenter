@@ -3,17 +3,20 @@ import { Logger } from 'winston';
 import { CommandStore } from '.';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { newLogger } from '../utils';
-
+import { connection } from '../database';
 import { GrandParentCommandExemple } from '../commands';
+import { Connection } from 'typeorm';
 
 export class CustomClient {
 	public client: Client;
 	public logger: Logger;
 	public store: CommandStore;
+	public db: Connection;
 
 	public constructor(public readonly token: string, syncSlash: boolean, debug: boolean) {
 		this.logger = newLogger('bot', debug);
 		this.store = new CommandStore(this, syncSlash, debug);
+		this.db = connection;
 
 		this.client = new Client({
 			shards: 0,
@@ -76,8 +79,12 @@ export class CustomClient {
 	}
 
 	public async connect(): Promise<void> {
-		this.logger.debug('Connecting client to the WebSocket...');
+		this.logger.debug('Connecting to the database...')
+		await this.db.connect();
+		this.logger.debug('Database connection was etablished!')
 
+
+		this.logger.debug('Connecting client to the WebSocket...');
 		await this.client.login(this.token).then(() => {
 			this.logger.info('WebSocket connection was established!');
 		});
