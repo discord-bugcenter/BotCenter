@@ -1,6 +1,8 @@
-import { Client, VoiceState, Interaction } from 'discord.js';
+import { Client, VoiceState, Interaction, GuildMember } from 'discord.js';
 import { Logger } from 'winston';
+import { i18n } from '../utils/i18n';
 import { CommandStore } from '.';
+import { EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { newLogger } from '../utils';
 import { connection } from '../database';
@@ -11,11 +13,13 @@ export class CustomClient {
 	public client: Client;
 	public logger: Logger;
 	public store: CommandStore;
+	public debug: boolean;
 	public db: Connection;
 
 	public constructor(public readonly token: string, syncSlash: boolean, debug: boolean) {
 		this.logger = newLogger('bot', debug);
 		this.store = new CommandStore(this, syncSlash, debug);
+		this.debug = debug;
 		this.db = connection;
 
 		this.client = new Client({
@@ -44,6 +48,16 @@ export class CustomClient {
 		});
 
 		this._registerEvents();
+	}
+
+	public getLocale(member: GuildMember): 'fr' | 'en' {
+		if (member.roles.cache.get(FR_ROLE_ID)) return 'fr'
+		if (member.roles.cache.get(EN_ROLE_ID)) return 'en'
+		return 'fr'
+	}
+
+	public setLocale(member: GuildMember): void {
+		i18n.setLocale(this.getLocale(member))
 	}
 
 	private _registerEvents(): void {
