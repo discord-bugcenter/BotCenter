@@ -18,5 +18,5 @@ export const connection = connectionManager.create({
     password: PASSWORD,
     database: DATABASE,
     entities: [User, Bot, Bug, Counter],
-    synchronize: true
+    synchronize: false
 });
