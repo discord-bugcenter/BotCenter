@@ -2,9 +2,9 @@ import { Client, VoiceState, Interaction, GuildMember } from 'discord.js';
 import { Logger } from 'winston';
 import { i18n } from '../utils/i18n';
 import { CommandStore } from '.';
-import { EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
+import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
-import { connection } from '../database';
+import { connection, User as DBUser } from '../database';
 import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
 
@@ -101,5 +101,27 @@ export class CustomClient {
 		await this.client.login(this.token).then(() => {
 			this.logger.info('WebSocket connection was established!');
 		});
+
+
+		this.logger.debug('Syncronize database with the guild...')
+		
+		const rawResult = await this.db.manager.createQueryBuilder(DBUser, 'user')
+			.select('user.id')
+			.getRawMany()
+		const dbUsersIds = rawResult.map(obj => obj['user_id'])
+
+		await this.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch().then(members => {
+			const notSavedUsers = members.filter(member => !dbUsersIds.includes(member.id))
+
+			const usersToSave = notSavedUsers.map(member => {
+				const notSavedUser = new DBUser();
+				notSavedUser.id = member.id;
+				return notSavedUser;
+			})
+			this.db.getRepository(DBUser).save(usersToSave)
+			
+			this.logger.debug(`${usersToSave.length} users saved in the database.`)
+		})
+
 	}
 }
