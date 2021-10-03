@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, PrimaryColumn} from "typeorm";
+import {Entity, Column, BaseEntity, ManyToOne, JoinColumn, PrimaryColumn} from "typeorm";
 import { Client } from ".";
 
 @Entity()
