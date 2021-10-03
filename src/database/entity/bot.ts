@@ -3,10 +3,10 @@ import { Bug, User } from ".";
 
 @Entity()
 export class Bot extends BaseEntity {
-    @Column('varchar', {length: 20, unique: true})
+    @PrimaryColumn('varchar', {length: 20})
     id: string;
 
-    @PrimaryColumn('varchar', {length: 20})
+    @Column('varchar', {length: 20})
     userId: string;
 
     @Column('varchar', { length: 2000, default: 'No description provided.'})
