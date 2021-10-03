@@ -1,0 +1,4 @@
+{
+	"Hello": "Bonjour",
+	"Here is your text : {{text}}": "Voici votre texte : {{text}}"
+}

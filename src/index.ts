@@ -5,5 +5,5 @@ if (!process.env.BOT_TOKEN || !process.env.POSTGRES_PASSWORD) {
     process.exit();
 }
 
-let client: CustomClient = new CustomClient(process.env.BOT_TOKEN, false, false);
+export let client: CustomClient = new CustomClient(process.env.BOT_TOKEN, false, false);
 client.connect()
