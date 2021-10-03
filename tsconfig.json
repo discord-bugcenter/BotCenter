@@ -10,6 +10,8 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "outDir": "build",
     "sourceMap": true
