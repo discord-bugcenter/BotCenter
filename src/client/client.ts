@@ -4,7 +4,6 @@ import { i18n } from '../utils/i18n';
 import { CommandStore } from '.';
 import { EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
-import { newLogger } from '../utils';
 import { connection } from '../database';
 import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
