@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn, PrimaryColumn, OneToMany} from "typeorm";
+import {Entity, Column, BaseEntity, OneToOne, JoinColumn, PrimaryColumn, OneToMany} from "typeorm";
 import { Bot, User } from ".";
 
 @Entity()
