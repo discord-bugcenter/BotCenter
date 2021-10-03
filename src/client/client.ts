@@ -10,10 +10,12 @@ export class CustomClient {
 	public client: Client;
 	public logger: Logger;
 	public store: CommandStore;
+	public debug: boolean;
 
 	public constructor(public readonly token: string, syncSlash: boolean, debug: boolean) {
 		this.logger = newLogger('bot', debug);
 		this.store = new CommandStore(this, syncSlash, debug);
+		this.debug = debug;
 
 		this.client = new Client({
 			shards: 0,
