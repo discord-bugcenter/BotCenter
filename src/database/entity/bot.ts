@@ -3,11 +3,11 @@ import { Client } from ".";
 
 @Entity()
 export class Bot extends BaseEntity {
+    @Column('varchar', { length: 20, unique: true })
+    id: string;
+
     @PrimaryColumn('varchar', { length: 20 })
     userId: string;
-
-    @Column('varchar', { length: 20, unique: true })
-    botId: string;
 
     @Column('varchar', { length: 2000, default: 'No description provided.' })
     description: string;
@@ -22,6 +22,6 @@ export class Bot extends BaseEntity {
     website?: string;
 
     @ManyToOne(type => Client, client => client.bots)
-    @JoinColumn({ name: 'userId'})
+    @JoinColumn({ referencedColumnName: 'userId', name: 'id'})
     client: Client;
 }
