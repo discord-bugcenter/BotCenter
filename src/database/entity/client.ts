@@ -5,7 +5,7 @@ import { Bot, User } from ".";
 export class Client extends BaseEntity {
 
     @PrimaryColumn('varchar', { length: 20 })
-    userId: string;
+    id: string;
 
     @Column('varchar', { length: 2000, nullable: true })
     avis?: string;
@@ -14,7 +14,7 @@ export class Client extends BaseEntity {
     note?: number;
 
     @OneToOne(type => User, user => user.client)
-    @JoinColumn({ name: 'userId'})
+    @JoinColumn()
     user: User
 
     @OneToMany(type => Bot, bot => bot.client, { eager: true })

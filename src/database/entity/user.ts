@@ -5,7 +5,7 @@ import { Client } from ".";
 export class User extends BaseEntity {
 
     @PrimaryColumn('varchar', { length: 20 })
-    userId: string;
+    id: string;
     
     @Column('varchar', { length: 2000, default: "No description provided." })
     description: string;
