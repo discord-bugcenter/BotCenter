@@ -1,5 +1,6 @@
 import { ButtonInteraction, Channel, CommandInteraction, Interaction, Role, User } from 'discord.js';
 import { CustomClient } from '../client';
+import { handleAdministratorVote } from '../functions/recruitment_management';
 import { verificationSystem } from '../functions/verification_system'; 
 import { Command } from '../models';
 import { BUG_CENTER_GUILD_ID } from '../utils';
@@ -13,6 +14,7 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 
 	if (interaction instanceof ButtonInteraction) {
 		await verificationSystem(bot, interaction);
+		await handleAdministratorVote(bot, interaction);
 	}
 
 	if (interaction instanceof CommandInteraction) {
