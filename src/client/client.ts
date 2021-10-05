@@ -81,6 +81,11 @@ export class CustomClient {
 		});
 		this.logger.debug('Registered event: "Interaction Create"!');
 
+		this.client.on('guildMemberAdd', async (member: GuildMember) => {
+			await handleGuildMemberAdd(this, member);
+		});
+		this.logger.debug('Registered event: "Interaction Create"!');
+
 		// TODO: Do event handlers and register them as listeners here
 	}
 
