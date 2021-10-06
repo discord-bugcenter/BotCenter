@@ -1,9 +1,9 @@
-import { Client, VoiceState, Interaction, GuildMember } from 'discord.js';
+import { Client, VoiceState, Interaction, GuildMember, Message } from 'discord.js';
 import { Logger } from 'winston';
 import { i18n } from '../utils/i18n';
 import { CommandStore } from '.';
 import { EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
-import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
+import { handleInteractionCreate, handleMessageCreate, handleReady, handleVoiceStateUpdate } from '../events';
 import { connection } from '../database';
 import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
@@ -80,6 +80,11 @@ export class CustomClient {
 			await handleInteractionCreate(this, interaction);
 		});
 		this.logger.debug('Registered event: "Interaction Create"!');
+
+		this.client.on('messageCreate', async (message: Message) => {
+			await handleMessageCreate(this, message);
+		});
+		this.logger.debug('Registered event: "Message Create"!');
 
 		// TODO: Do event handlers and register them as listeners here
 	}
