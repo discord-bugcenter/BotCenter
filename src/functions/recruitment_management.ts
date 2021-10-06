@@ -1,7 +1,6 @@
 import { ButtonInteraction, Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { CustomClient } from "../client";
 
-const ADMINISTRATORS = ['341550709193441280', '638474353842978816', '263713074630885376']  // order is important
 
 export async function initRecruitmentMessage(bot: CustomClient, message: Message): Promise<void> {
     if (!message.guild) return
