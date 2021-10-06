@@ -1,5 +1,6 @@
 import { ButtonInteraction, Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { CustomClient } from "../client";
+import { ADMINISTRATORS } from "../utils";
 
 
 export async function initRecruitmentMessage(bot: CustomClient, message: Message): Promise<void> {
