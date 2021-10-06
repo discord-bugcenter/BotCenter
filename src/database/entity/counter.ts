@@ -1,14 +1,13 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity()
 export class Counter extends BaseEntity {
+	@PrimaryGeneratedColumn({ type: 'bigint' })
+	public id: bigint;
 
-    @PrimaryGeneratedColumn({type: 'bigint'})
-    id: bigint;
+	@Column('varchar', { length: 20 })
+	public userId: string;
 
-    @Column('varchar', {length: 20})
-    userId: string;
-
-    @Column('integer')
-    number: number;
+	@Column('integer')
+	public number: number;
 }

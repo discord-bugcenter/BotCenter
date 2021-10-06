@@ -1,6 +1,23 @@
 {
-  "extends": "marine/node",
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "marine/node"
+  ],
   "rules": {
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { 
+        "argsIgnorePattern": "^type|^_",
+        "varsIgnorePattern": "^_" 
+      }
+    ]
   }
 }

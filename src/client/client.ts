@@ -49,13 +49,13 @@ export class CustomClient {
 	}
 
 	public getLocale(member: GuildMember): 'fr' | 'en' {
-		if (member.roles.cache.get(FR_ROLE_ID)) return 'fr'
-		if (member.roles.cache.get(EN_ROLE_ID)) return 'en'
-		return 'fr'
+		if (member.roles.cache.get(FR_ROLE_ID)) return 'fr';
+		if (member.roles.cache.get(EN_ROLE_ID)) return 'en';
+		return 'fr';
 	}
 
 	public setLocale(member: GuildMember): void {
-		i18n.setLocale(this.getLocale(member))
+		i18n.setLocale(this.getLocale(member));
 	}
 
 	private _registerEvents(): void {
@@ -84,7 +84,7 @@ export class CustomClient {
 			await handleMessageCreate(this, message);
 		});
 		this.logger.debug('Registered event: "Message Create"!');
-		
+
 		this.client.on('guildMemberAdd', async (member: GuildMember) => {
 			await handleGuildMemberAdd(this, member);
 		});
@@ -96,14 +96,14 @@ export class CustomClient {
 	private async _registerCommands(): Promise<void> {
 		this.logger.debug('Registering commands...');
 
-		const command = new GrandParentCommandExemple(this)
-		await this.store.setCommand(command.name, command)
+		const command = new GrandParentCommandExemple(this);
+		await this.store.setCommand(command.name, command);
 	}
 
 	public async connect(): Promise<void> {
-		this.logger.debug('Connecting to the database...')
+		this.logger.debug('Connecting to the database...');
 		await this.db.connect();
-		this.logger.debug('Database connection was etablished!')
+		this.logger.debug('Database connection was etablished!');
 
 
 		this.logger.debug('Connecting client to the WebSocket...');
@@ -112,25 +112,24 @@ export class CustomClient {
 		});
 
 
-		this.logger.debug('Syncronize database with the guild...')
-		
+		this.logger.debug('Syncronize database with the guild...');
+
 		const rawResult = await this.db.manager.createQueryBuilder(DBUser, 'user')
 			.select('user.id')
-			.getRawMany()
-		const dbUsersIds = rawResult.map(obj => obj['user_id'])
+			.getRawMany();
+		const dbUsersIds = rawResult.map(obj => obj['user_id']);
 
-		await this.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch().then(members => {
-			const notSavedUsers = members.filter(member => !dbUsersIds.includes(member.id))
+		await this.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch().then(async members => {
+			const notSavedUsers = members.filter(member => !dbUsersIds.includes(member.id));
 
 			const usersToSave = notSavedUsers.map(member => {
 				const notSavedUser = new DBUser();
 				notSavedUser.id = member.id;
 				return notSavedUser;
-			})
-			this.db.getRepository(DBUser).save(usersToSave)
-			
-			this.logger.debug(`${usersToSave.length} users saved in the database.`)
-		})
+			});
+			await this.db.getRepository(DBUser).save(usersToSave);
 
+			this.logger.debug(`${usersToSave.length} users saved in the database.`);
+		});
 	}
 }
