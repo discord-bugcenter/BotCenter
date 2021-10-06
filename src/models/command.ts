@@ -6,12 +6,12 @@ import { BUG_CENTER_GUILD_ID } from '../utils/index';
 export type ExtendedApplicationCommandOption = ApplicationCommandOption & {
 	default?: string | number | boolean | Role | Channel | User;
 	internalReference?: string;
-}
+};
 
 interface CommandParameters {
 	name: string;
 	description: string;
-	options?: ExtendedApplicationCommandOption[] | Command[]; 
+	options?: ExtendedApplicationCommandOption[] | Command[];
 	allowedRoles?: Snowflake[];
 	deniedRoles?: Snowflake[];
 	allowedUsers?: Snowflake[];
@@ -19,19 +19,19 @@ interface CommandParameters {
 }
 
 export abstract class Command {
-	readonly name: string;
-	readonly description: string;
+	public readonly name: string;
+	public readonly description: string;
 	private readonly _options: ExtendedApplicationCommandOption[] | Command[] = [];
 
-	readonly allowedRoles: Snowflake[] = [];
-	readonly deniedRoles: Snowflake[] = [];
-	readonly allowedUsers: Snowflake[] = [];
-	readonly deniedUsers: Snowflake[] = [];
+	public readonly allowedRoles: Snowflake[] = [];
+	public readonly deniedRoles: Snowflake[] = [];
+	public readonly allowedUsers: Snowflake[] = [];
+	public readonly deniedUsers: Snowflake[] = [];
 
-	readonly logger: Logger;
-	readonly bot: CustomClient;
+	private readonly logger: Logger;
+	private readonly bot: CustomClient;
 
-	constructor (bot: CustomClient, parameters: CommandParameters) {
+	public constructor(bot: CustomClient, parameters: CommandParameters) {
 		this.name = parameters.name;
 		this.description = parameters.description;
 
@@ -42,7 +42,6 @@ export abstract class Command {
 		if (parameters.deniedUsers) this.deniedUsers = parameters.deniedUsers;
 
 
-
 		this.logger = bot.logger;
 		this.bot = bot;
 	}
@@ -51,18 +50,18 @@ export abstract class Command {
    * Action to do when a Command Interaction is used
    * @param interaction The CommandInteraction
    */
-	async do(interaction: CommandInteraction, args: object): Promise<void> {
-		await interaction.reply("This command has not been implemented yet.")
-	};
+	public async do(interaction: CommandInteraction, _args: Record<string, any>): Promise<void> {
+		await interaction.reply('This command has not been implemented yet.');
+	}
 
-	get applicationCommand(): ApplicationCommand | undefined {
+	public get applicationCommand(): ApplicationCommand | undefined {
 		return this.bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.commands.cache.filter(cmd => cmd.name === this.name).first();
-	};
+	}
 
-	get options(): ApplicationCommandOption[] {
+	public get options(): ApplicationCommandOption[] {
 		function transformOptions(options: ExtendedApplicationCommandOption[] | Command[]): ApplicationCommandOption[] {
-			let transformedOptions: ApplicationCommandOption[] = []
-			
+			const transformedOptions: ApplicationCommandOption[] = [];
+
 			for (const option of options) {
 				if (option instanceof Command) {
 					if (option._options[0] instanceof Command) {
@@ -71,16 +70,15 @@ export abstract class Command {
 							name: option.name,
 							description: option.description,
 							options: transformOptions(option._options) as ApplicationCommandSubCommandData[] & ApplicationCommandOption[]
-						})
+						});
 					} else {
 						transformedOptions.push({
 							type: 'SUB_COMMAND',
 							name: option.name,
 							description: option.description,
 							options: transformOptions(option._options) as ApplicationCommandNonOptionsData[] & ApplicationCommandOption[]
-						})
+						});
 					}
-
 				} else {
 					transformedOptions.push(option);
 				}
@@ -90,21 +88,18 @@ export abstract class Command {
 		return transformOptions(this._options);
 	}
 
-	get subCommands(): Command[] | undefined {
+	public get subCommands(): Command[] | undefined {
 		if (this._options[0] instanceof Command) {
 			return this._options as Command[];
-		} else {
-			return undefined;
 		}
+		return undefined;
 	}
 
-	get extendedOptions(): ExtendedApplicationCommandOption[] | undefined {
+	public get extendedOptions(): ExtendedApplicationCommandOption[] | undefined {
 		if (!(this._options[0] instanceof Command)) {
-			return this._options as ExtendedApplicationCommandOption[]
-		} else {
-			return undefined;
+			return this._options as ExtendedApplicationCommandOption[];
 		}
-		
+		return undefined;
 	}
 }
 

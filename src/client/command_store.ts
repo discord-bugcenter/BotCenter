@@ -11,7 +11,7 @@ export class CommandStore {
 	public syncSlash: boolean;
 	public logger: Logger;
 
-	public constructor(bot: CustomClient,  syncSlash: boolean, debug: boolean) {
+	public constructor(bot: CustomClient, syncSlash: boolean, debug: boolean) {
 		this._commands = new Map<string, Command>();
 		this.bot = bot;
 		this.syncSlash = syncSlash;
@@ -19,11 +19,11 @@ export class CommandStore {
 	}
 
 	private get guildCommands(): GuildApplicationCommandManager | undefined {
-		return  this.bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.commands;
+		return this.bot.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.commands;
 	}
 
 	public async fetchCommands(): Promise<void> {
-		await this.guildCommands?.fetch()
+		await this.guildCommands?.fetch();
 	}
 
 	public getCommand(name: string): Command | undefined {
@@ -40,26 +40,26 @@ export class CommandStore {
 
 	public async setCommand(name: string, command: Command): Promise<Command> {
 		this.logger.debug(`Setting command ${name}...`);
-		
+
 		if (this.syncSlash) {
 			this.logger.debug(`Pushing command ${name} to Discord...`);
-			
+
 			await this.guildCommands?.create({
 				name: command.name,
 				description: command.description,
 				options: command.options
 			}).then(async applicationCommand => {
-				const permissions: ApplicationCommandPermissions[] = []
-				
-				command.allowedRoles.forEach(role => permissions.push({id: role, type: 'ROLE', permission: true}))
-				command.deniedRoles.forEach(role => permissions.push({id: role, type: 'ROLE', permission: false}))
-				command.allowedUsers.forEach(role => permissions.push({id: role, type: 'USER', permission: true}))
-				command.deniedUsers.forEach(role => permissions.push({id: role, type: 'USER', permission: false}))
+				const permissions: ApplicationCommandPermissions[] = [];
 
-				if (command.allowedRoles.length && !command.deniedRoles.length) permissions.push({id: BUG_CENTER_GUILD_ID, type: 'ROLE', permission: false})
+				command.allowedRoles.forEach(role => permissions.push({ id: role, type: 'ROLE', permission: true }));
+				command.deniedRoles.forEach(role => permissions.push({ id: role, type: 'ROLE', permission: false }));
+				command.allowedUsers.forEach(role => permissions.push({ id: role, type: 'USER', permission: true }));
+				command.deniedUsers.forEach(role => permissions.push({ id: role, type: 'USER', permission: false }));
 
-				await this.guildCommands?.permissions.set({command: applicationCommand.id, permissions: permissions})
-			})
+				if (command.allowedRoles.length && !command.deniedRoles.length) permissions.push({ id: BUG_CENTER_GUILD_ID, type: 'ROLE', permission: false });
+
+				await this.guildCommands?.permissions.set({ command: applicationCommand.id, permissions: permissions });
+			});
 		}
 
 		this._commands.set(name, command);
@@ -71,18 +71,20 @@ export class CommandStore {
 	public async deleteCommand(name: string): Promise<void> {
 		this.logger.debug(`Deleting command ${name}...`);
 
-		await this._commands.get(name)?.applicationCommand?.delete()
+		await this._commands.get(name)?.applicationCommand?.delete();
 		if (this._commands.delete(name)) {
 			this.logger.debug(`Deleted command ${name}!`);
 		}
 	}
 
-	public async cleanCommands(): Promise<void> {
-		this.guildCommands?.cache.forEach(async command => {
+	public cleanCommands(): void {
+		if (!this.guildCommands) return;
+
+		for (const command of this.guildCommands.cache.values()) {
 			if (!this.hasCommand(command.name)) {
 				this.logger.debug(`Removing the command ${command.name} from Discord...`);
-				await command.delete()
+				void command.delete();
 			}
-		})
+		}
 	}
 }

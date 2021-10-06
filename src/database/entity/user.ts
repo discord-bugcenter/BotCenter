@@ -1,45 +1,45 @@
-import {Entity, Column, BaseEntity, OneToOne, PrimaryColumn, OneToMany} from "typeorm";
-import { Bot } from "./index";
+import { Entity, Column, BaseEntity, PrimaryColumn, OneToMany } from 'typeorm';
+import { Bot } from './index';
 
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryColumn('varchar', {length: 20})
-    id: string;
-    
-    @Column('varchar', {length: 2000, default: "No description provided."})
-    description: string;
-    
-    @Column('real', {default: 0})
-    credits: number;
-    
-    @Column('integer', {default: 0})
-    messagesNumber: number;
+	@PrimaryColumn('varchar', { length: 20 })
+	public id: string;
 
-    @Column('integer', {default: 0})
-    experience: number;
-    
-    @Column('real', {default: 0.0})
-    donation: number;
-    
-    @Column('smallint', {default: 0})
-    reputation: number;
+	@Column('varchar', { 'length': 2000, 'default': 'No description provided.' })
+	public description: string;
 
-    @Column('smallint', {default: 5})
-    pendingBugs: number;
+	@Column('real', { 'default': 0 })
+	public credits: number;
 
-    @Column('smallint', {default: 1})
-    pendingBots: number;
+	@Column('integer', { 'default': 0 })
+	public messagesNumber: number;
 
-    @Column('varchar', {length: 2000, nullable: true})
-    avis?: string;
+	@Column('integer', { 'default': 0 })
+	public experience: number;
 
-    @Column('real', {nullable: true})
-    note?: number;
-    
-    @OneToMany(type => Bot, bot => bot.user, {eager: true})
-    bots: Bot[];
+	@Column('real', { 'default': 0.0 })
+	public donation: number;
 
-    get client(): boolean {
-        return this.bots.length > 0
-    }
+	@Column('smallint', { 'default': 0 })
+	public reputation: number;
+
+	@Column('smallint', { 'default': 5 })
+	public pendingBugs: number;
+
+	@Column('smallint', { 'default': 1 })
+	public pendingBots: number;
+
+	@Column('varchar', { length: 2000, nullable: true })
+	public avis?: string;
+
+	@Column('real', { nullable: true })
+	public note?: number;
+
+	@OneToMany(type => Bot, bot => bot.user, { eager: true })
+	public bots: Bot[];
+
+	public get client(): boolean {
+		return this.bots.length > 0;
+	}
 }
