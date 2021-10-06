@@ -5,5 +5,8 @@ RUN yarn install --production && \
   yarn run build
 
 FROM gcr.io/distroless/nodejs:10
-COPY --from=build /app/build /app/assets /app/node_modules /app/
+WORKDIR /app
+COPY --from=build /app/build .
+COPY --from=build /app/assets .
+COPY --from=build /app/node_modules .
 CMD [ "/app/build/index.js" ]
