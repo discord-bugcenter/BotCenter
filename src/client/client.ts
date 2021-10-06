@@ -7,6 +7,7 @@ import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '..
 import { connection, User as DBUser } from '../database';
 import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
+import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd } from '../events/index';
 
 export class CustomClient {
 	public client: Client;
