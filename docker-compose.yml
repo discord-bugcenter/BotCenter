@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  bot:
+    build: .
+    network:
+      - bot-network
+    depends-on:
+      - pg
+    env_file:
+      - .env
+  pg:
+    image: "postgres:13-alpine"
+    env_file: 
+      - .env
+
+networks:
+  bot-network:
+volumes:
+  db-volume:
