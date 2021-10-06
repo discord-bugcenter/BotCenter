@@ -1,7 +1,7 @@
 import { CommandInteraction } from "discord.js";
-import { CustomClient } from "../../client";
-import { Command } from "../../models";
-import { __ } from "../../utils/i18n";
+import { CustomClient } from "../../client/index";
+import { Command } from "../../models/index";
+import { __ } from "../../utils/index";
 
 
 export class GrandParentCommandExemple extends Command {

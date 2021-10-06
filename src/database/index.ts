@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {getConnectionManager} from "typeorm";
-import {User, Bot, Bug, Counter} from "./entity";
-export * from './entity';
+import {User, Bot, Bug, Counter} from "./entity/index";
+export * from './entity/index';
 
 const HOST = process.env.POSTGRES_HOST || 'localhost';
 const PORT = process.env.POSTGRES_POST ? parseInt(process.env.POSTGRES_POST) : 5432;

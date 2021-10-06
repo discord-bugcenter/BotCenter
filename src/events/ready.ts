@@ -1,6 +1,6 @@
 import { Guild } from 'discord.js';
 import { CustomClient } from '../client';
-import { BUG_CENTER_GUILD_ID } from '../utils';
+import { BUG_CENTER_GUILD_ID } from '../utils/index';
 
 export function handleReady(bot: CustomClient): void {
 	bot.logger.debug('Received Ready event');

@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js';
 import { CustomClient } from '../client';
-import { User as DBUser } from '../database';
+import { User as DBUser } from '../database/index';
 
 
 export async function handleGuildMemberAdd(bot: CustomClient, member: GuildMember): Promise<void> {

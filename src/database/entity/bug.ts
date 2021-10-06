@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, ManyToOne, JoinColumn} from "typeorm";
-import { Bot } from ".";
+import { Bot } from "./index";
 
 @Entity()
 export class Bug extends BaseEntity {

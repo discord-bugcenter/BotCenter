@@ -1,8 +1,8 @@
 import { ApplicationCommandPermissions, GuildApplicationCommandManager } from 'discord.js';
 import { Logger } from 'winston';
-import { CustomClient } from '.';
-import { Command } from '../models';
-import { BUG_CENTER_GUILD_ID, newLogger } from '../utils';
+import { CustomClient } from './index';
+import { Command } from '../models/index';
+import { BUG_CENTER_GUILD_ID, newLogger } from '../utils/index';
 
 
 export class CommandStore {

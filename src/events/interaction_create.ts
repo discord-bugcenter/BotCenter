@@ -1,8 +1,8 @@
 import { ButtonInteraction, Channel, CommandInteraction, Interaction, Role, User } from 'discord.js';
 import { CustomClient } from '../client';
 import { verificationSystem } from '../functions/verification_system'; 
-import { Command } from '../models';
-import { BUG_CENTER_GUILD_ID } from '../utils';
+import { Command } from '../models/index';
+import { BUG_CENTER_GUILD_ID } from '../utils/index';
 
 
 export async function handleInteractionCreate(bot: CustomClient, interaction: Interaction): Promise<void> {
