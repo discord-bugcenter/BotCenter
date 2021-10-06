@@ -1,5 +1,5 @@
 import {Entity, Column, BaseEntity, ManyToOne, JoinColumn, PrimaryColumn, OneToMany} from "typeorm";
-import { Bug, User } from ".";
+import { Bug, User } from "./index";
 
 @Entity()
 export class Bot extends BaseEntity {

@@ -1,13 +1,11 @@
 import { Client, VoiceState, Interaction, GuildMember } from 'discord.js';
 import { Logger } from 'winston';
-import { i18n } from '../utils/i18n';
-import { CommandStore } from '.';
-import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
-import { handleInteractionCreate, handleReady, handleVoiceStateUpdate } from '../events';
-import { connection, User as DBUser } from '../database';
-import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
+import { CommandStore } from './index';
+import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger, i18n } from '../utils/index';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd } from '../events/index';
+import { GrandParentCommandExemple } from '../commands/index';
+import { connection, User as DBUser } from '../database/index';
 
 export class CustomClient {
 	public client: Client;
