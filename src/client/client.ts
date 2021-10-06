@@ -1,12 +1,11 @@
 import { Client, VoiceState, Interaction, GuildMember, Message } from 'discord.js';
 import { Logger } from 'winston';
-import { i18n } from '../utils/i18n';
-import { CommandStore } from '.';
-import { EN_ROLE_ID, FR_ROLE_ID, newLogger } from '../utils';
-import { handleInteractionCreate, handleMessageCreate, handleReady, handleVoiceStateUpdate } from '../events';
-import { connection } from '../database';
-import { GrandParentCommandExemple } from '../commands';
 import { Connection } from 'typeorm';
+import { CommandStore } from './index';
+import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger, i18n } from '../utils/index';
+import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd, handleMessageCreate } from '../events/index';
+import { GrandParentCommandExemple } from '../commands/index';
+import { connection, User as DBUser } from '../database/index';
 
 export class CustomClient {
 	public client: Client;
@@ -85,6 +84,11 @@ export class CustomClient {
 			await handleMessageCreate(this, message);
 		});
 		this.logger.debug('Registered event: "Message Create"!');
+		
+		this.client.on('guildMemberAdd', async (member: GuildMember) => {
+			await handleGuildMemberAdd(this, member);
+		});
+		this.logger.debug('Registered event: "Interaction Create"!');
 
 		// TODO: Do event handlers and register them as listeners here
 	}
@@ -106,5 +110,27 @@ export class CustomClient {
 		await this.client.login(this.token).then(() => {
 			this.logger.info('WebSocket connection was established!');
 		});
+
+
+		this.logger.debug('Syncronize database with the guild...')
+		
+		const rawResult = await this.db.manager.createQueryBuilder(DBUser, 'user')
+			.select('user.id')
+			.getRawMany()
+		const dbUsersIds = rawResult.map(obj => obj['user_id'])
+
+		await this.client.guilds.cache.get(BUG_CENTER_GUILD_ID)?.members.fetch().then(members => {
+			const notSavedUsers = members.filter(member => !dbUsersIds.includes(member.id))
+
+			const usersToSave = notSavedUsers.map(member => {
+				const notSavedUser = new DBUser();
+				notSavedUser.id = member.id;
+				return notSavedUser;
+			})
+			this.db.getRepository(DBUser).save(usersToSave)
+			
+			this.logger.debug(`${usersToSave.length} users saved in the database.`)
+		})
+
 	}
 }

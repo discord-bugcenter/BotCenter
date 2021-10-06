@@ -1,7 +1,7 @@
 import { ApplicationCommand, ApplicationCommandNonOptionsData, ApplicationCommandOption, ApplicationCommandSubCommandData, Channel, CommandInteraction, Role, Snowflake, User } from 'discord.js';
 import { Logger } from 'winston';
 import { CustomClient } from '../client';
-import { BUG_CENTER_GUILD_ID } from '../utils';
+import { BUG_CENTER_GUILD_ID } from '../utils/index';
 
 export type ExtendedApplicationCommandOption = ApplicationCommandOption & {
 	default?: string | number | boolean | Role | Channel | User;

@@ -1,7 +1,6 @@
-import { Interaction, ButtonInteraction, MessageActionRow, MessageButton, MessageSelectMenu, Message, InteractionCollector, MessageInteraction, MessageComponentInteraction, User, Client, SelectMenuInteraction, MessageAttachment, MessageEmbed, MessageSelectOption, Snowflake, GuildMember } from 'discord.js';
+import { Interaction, ButtonInteraction, MessageActionRow, MessageButton, MessageSelectMenu, InteractionCollector, SelectMenuInteraction, MessageAttachment, Snowflake, GuildMember } from 'discord.js';
 import { CustomClient } from '../client';
-import { BUG_CENTER_GUILD_ID } from '../utils';
-import { getRandom, shuffle } from '../utils';
+import { getRandom, shuffle, BUG_CENTER_GUILD_ID } from '../utils/index';
 
 
 export async function verificationSystem(bot: CustomClient, interaction: ButtonInteraction): Promise<void> {

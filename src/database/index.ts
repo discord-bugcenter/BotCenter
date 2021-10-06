@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import {getConnectionManager} from "typeorm";
-import { User, Client, Bot, Bug, Counter } from "./entity";
+import {User, Bot, Bug, Counter} from "./entity/index";
+export * from './entity/index';
 
 const HOST = process.env.POSTGRES_HOST || 'localhost';
 const PORT = process.env.POSTGRES_POST ? parseInt(process.env.POSTGRES_POST) : 5432;
@@ -17,6 +18,6 @@ export const connection = connectionManager.create({
     username: USERNAME,
     password: PASSWORD,
     database: DATABASE,
-    entities: [User, Client, Bot, Bug, Counter],
-    synchronize: true
+    entities: [User, Bot, Bug, Counter],
+    synchronize: false
 });
