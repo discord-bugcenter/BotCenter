@@ -1,27 +1,30 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, PrimaryColumn} from "typeorm";
-import { Client } from ".";
+import {Entity, Column, BaseEntity, ManyToOne, JoinColumn, PrimaryColumn, OneToMany} from "typeorm";
+import { Bug, User } from "./index";
 
 @Entity()
 export class Bot extends BaseEntity {
-    @PrimaryColumn('varchar', { length: 20 })
+    @PrimaryColumn('varchar', {length: 20})
+    id: string;
+
+    @Column('varchar', {length: 20})
     userId: string;
 
-    @Column('varchar', { length: 20, unique: true })
-    botId: string;
-
-    @Column('varchar', { length: 2000, default: 'No description provided.' })
+    @Column('varchar', { length: 2000, default: 'No description provided.'})
     description: string;
 
-    @Column('varchar', { length: 20, array: true, default: [] })
+    @Column('varchar', {length: 20, array: true, default: []})
     otherDeveloppers: string[];
 
-    @Column('varchar', { length: 50, nullable: true })
+    @Column('varchar', {length: 50, nullable: true})
     supportServer?: string;
 
-    @Column('varchar', { length: 50, nullable: true })
+    @Column('varchar', {length: 50, nullable: true})
     website?: string;
 
-    @ManyToOne(type => Client, client => client.bots)
-    @JoinColumn({ name: 'userId'})
-    client: Client;
+    @ManyToOne(type => User, user => user.bots)
+    @JoinColumn({name: 'userId'})
+    user: User;
+
+    @OneToMany(type => Bug, bug => bug.bot)
+    bugs: Bug[];
 }

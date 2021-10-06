@@ -1,30 +1,45 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn, PrimaryColumn} from "typeorm";
-import { Client } from ".";
+import {Entity, Column, BaseEntity, OneToOne, PrimaryColumn, OneToMany} from "typeorm";
+import { Bot } from "./index";
 
 @Entity()
 export class User extends BaseEntity {
-
-    @PrimaryColumn('varchar', { length: 20 })
-    userId: string;
+    @PrimaryColumn('varchar', {length: 20})
+    id: string;
     
-    @Column('varchar', { length: 2000, default: "No description provided." })
+    @Column('varchar', {length: 2000, default: "No description provided."})
     description: string;
     
-    @Column('real', { default: 0 })
+    @Column('real', {default: 0})
     credits: number;
     
-    @Column('integer', { default: 0 })
+    @Column('integer', {default: 0})
     messagesNumber: number;
 
-    @Column('integer', { default: 0 })
+    @Column('integer', {default: 0})
     experience: number;
     
-    @Column('real', { default: 0.0 })
+    @Column('real', {default: 0.0})
     donation: number;
     
-    @Column('smallint', { default: 0 })
+    @Column('smallint', {default: 0})
     reputation: number;
+
+    @Column('smallint', {default: 5})
+    pendingBugs: number;
+
+    @Column('smallint', {default: 1})
+    pendingBots: number;
+
+    @Column('varchar', {length: 2000, nullable: true})
+    avis?: string;
+
+    @Column('real', {nullable: true})
+    note?: number;
     
-    @OneToOne(type => Client, client => client.user, { eager: true })
-    client?: Client
+    @OneToMany(type => Bot, bot => bot.user, {eager: true})
+    bots: Bot[];
+
+    get client(): boolean {
+        return this.bots.length > 0
+    }
 }
