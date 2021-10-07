@@ -32,4 +32,4 @@ When contributing, make sure you respect our **Code Of Conduct** and the guideli
 
 ## License
 
-See [LICENSE](LICENSE).
+See [LICENSE](LICENSE.txt).
