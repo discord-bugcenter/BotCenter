@@ -5,7 +5,7 @@ RUN yarn install --production
 COPY . .
 RUN yarn build
 
-FROM gcr.io/distroless/nodejs:16
+FROM gcr.io/distroless/nodejs-debian11:16
 WORKDIR /app
 COPY --from=build /app/build ./build
 COPY --from=build /app/assets ./assets
