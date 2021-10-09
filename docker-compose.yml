@@ -3,10 +3,12 @@ version: "3.8"
 services:
   bot:
     build: .
-    depends-on:
+    depends_on:
       - postgres
     env_file:
       - .env
+    volumes:
+      - ./locales:/app/locales
   postgres:
     image: "postgres:14-alpine"
     env_file: 
