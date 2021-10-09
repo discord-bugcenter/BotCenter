@@ -3,7 +3,7 @@ version: "3.8"
 services:
   bot:
     build: .
-    depends-on:
+    depends_on:
       - postgres
     env_file:
       - .env
