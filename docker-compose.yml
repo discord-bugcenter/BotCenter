@@ -1,19 +1,17 @@
 version: "3.8"
+
 services:
   bot:
     build: .
-    network:
-      - bot-network
     depends-on:
-      - pg
+      - postgres
     env_file:
       - .env
-  pg:
-    image: "postgres:13-alpine"
+  postgres:
+    image: "postgres:14-alpine"
     env_file: 
       - .env
-
-networks:
-  bot-network:
-volumes:
-  db-volume:
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
