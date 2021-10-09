@@ -1,8 +1,9 @@
 FROM node:16 AS build
 WORKDIR /app
+COPY ./package.json ./yarn.lock ./
+RUN yarn install --production
 COPY . .
-RUN yarn install --production && \
-  yarn build
+RUN yarn build
 
 FROM gcr.io/distroless/nodejs:16
 WORKDIR /app
