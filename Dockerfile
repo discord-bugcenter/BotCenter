@@ -5,7 +5,9 @@ RUN yarn install --production && \
   yarn build
 
 FROM gcr.io/distroless/nodejs:16
-
-COPY --from=build /app/build /app/assets /app/node_modules /
+WORKDIR /app
+COPY --from=build /app/build ./build
+COPY --from=build /app/assets ./assets
+COPY --from=build /app/node_modules ./node_modules
 
 ENTRYPOINT [ "/app/build/index.js" ]
