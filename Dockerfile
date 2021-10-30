@@ -1,9 +1,13 @@
 FROM node:16 AS build
 WORKDIR /app
+COPY ./package.json ./yarn.lock ./
+RUN yarn install --production
 COPY . .
-RUN yarn install --production && \
-  yarn run build
+RUN yarn build
 
-FROM gcr.io/distroless/nodejs:10
-COPY --from=build /app/build /app/assets /app/node_modules /app/
+FROM gcr.io/distroless/nodejs-debian11:16
+WORKDIR /app
+COPY --from=build /app/build ./build
+COPY --from=build /app/assets ./assets
+COPY --from=build /app/node_modules ./node_modules
 CMD [ "/app/build/index.js" ]

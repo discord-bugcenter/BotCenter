@@ -5,13 +5,12 @@
   "main": "build/index.js",
   "repository": "git@github.com:discord-bugcenter/BotCenter.git",
   "author": "n1c00o <git.n1c00o@gmail.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "build": "tsc",
-    "install": "yarn run build",
     "start": "node ."
   },
   "devDependencies": {
