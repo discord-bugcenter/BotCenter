@@ -4,7 +4,7 @@ import { Connection } from 'typeorm';
 import { CommandStore } from './index';
 import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger, i18n } from '../utils/index';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd, handleMessageCreate } from '../events/index';
-import * as commands  from '../commands/index';
+import * as commands from '../commands/index';
 import { connection, User as DBUser } from '../database/index';
 
 export class CustomClient {
@@ -110,7 +110,7 @@ export class CustomClient {
 			commands.Ticket,
 			commands.Top,
 			commands.UnMute,
-		]
+		];
 
 		for (const commandObject of allCommands) {
 			const command = new commandObject(this);
