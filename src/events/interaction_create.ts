@@ -22,12 +22,12 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 
 		if (!storedCommand) return;
 
-		const subcommandGroup = interaction.options.getSubcommandGroup();
+		const subcommandGroup = interaction.options.getSubcommandGroup(false);
 		if (subcommandGroup) {
 			storedCommand = storedCommand.subCommands?.find(option => option.name === subcommandGroup) as Command;
 		}
 
-		const subcommand = interaction.options.getSubcommand();
+		const subcommand = interaction.options.getSubcommand(false);
 		if (subcommand) {
 			storedCommand = storedCommand.subCommands?.find(option => option.name === subcommand) as Command;
 		}

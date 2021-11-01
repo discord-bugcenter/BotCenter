@@ -1,1 +1,10 @@
-export { GrandParentCommandExemple } from './global/exemple';
+export { BotCommand } from './bot';
+export { Buy } from './buy';
+export { Ticket } from './ticket';
+export { Manage } from './manage';
+export { Suggest } from './suggest';
+export { Pay } from './pay';
+export { Profil } from './profil';
+export { Bugs } from './bugs';
+export { Top } from './top';
+export { Ban, Kick, Mute, UnMute, CheckUp } from './staff';
