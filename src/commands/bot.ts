@@ -109,7 +109,6 @@ class AddBug extends Command {
 
 
 interface RemoveBugArguments {
-	botId: string;
 	bugId: number;
 }
 class RemoveBug extends Command {
@@ -118,13 +117,6 @@ class RemoveBug extends Command {
 			name: 'removebug',
 			description: 'Remove a bug from a bot.',
 			options: [
-				{
-					name: 'bot_id',
-					type: 'STRING',
-					description: 'The bot ID.',
-					required: true,
-					internalReference: 'botId'
-				},
 				{
 					name: 'bug_id',
 					type: 'INTEGER',
@@ -139,7 +131,7 @@ class RemoveBug extends Command {
 	public async do(interaction: CommandInteraction, args: RemoveBugArguments): Promise<void> {
 		const bug = await Bug.findOne({ id: args.bugId });
 		if (!bug) return this.bot.send_error(interaction, __('This bug does not exist !'));
-
+		// TODO : add confirmation
 		const user = await (await bug.bot).user;
 		user.pendingBugs += 1;
 		await user.save();
