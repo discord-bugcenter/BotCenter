@@ -4,7 +4,7 @@ import { Bot } from './index';
 @Entity()
 export class Bug extends BaseEntity {
 	@PrimaryGeneratedColumn({ type: 'bigint' })
-	public id: bigint;
+	public id: number;
 
 	@Column('varchar', { length: 20 })
 	public botId: string;
@@ -18,7 +18,7 @@ export class Bug extends BaseEntity {
 	@Column('varchar', { length: 20 })
 	public verificatorId: string;
 
-	@ManyToOne(type => Bot, bot => bot.bugs)
+	@ManyToOne(type => Bot, bot => bot.bugs, { lazy: true })
 	@JoinColumn({ name: 'botId' })
-	public bot: Bot;
+	public bot: Promise<Bot>;
 }

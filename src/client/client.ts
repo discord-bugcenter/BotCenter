@@ -166,12 +166,12 @@ export class CustomClient {
 			.setColor(0x050505)
 			.setAuthor(inter.user.tag, inter.user.displayAvatarURL({ dynamic: true }))
 			.setTimestamp(new Date())
-			.setTitle(__('{0} Error', EMOJIS.error))
+			.setTitle(__('{{{0}}} Error', EMOJIS.error))
 			.setURL('https://discord.gg/Drbgufc')
 			.setDescription(message);
 
 		if (this.client.user) {
-			embed.setFooter(__('{0}, open source project', this.client.user.tag), this.client.user.displayAvatarURL());
+			embed.setFooter(__('{{0}}, open source project', [this.client.user.tag]), this.client.user.displayAvatarURL());
 		}
 
 		await inter.reply({ embeds: [embed] });
@@ -187,7 +187,7 @@ export class CustomClient {
 			.setTitle(__(messageOptions.title));
 
 		if (this.client.user) {
-			embed.setFooter(__('{0}, open source project', this.client.user.tag), this.client.user.displayAvatarURL());
+			embed.setFooter(__('{{0}}, open source project', [this.client.user.tag]), this.client.user.displayAvatarURL());
 		}
 		if (messageOptions.footer) embed.setFooter(messageOptions.footer);
 

@@ -21,10 +21,10 @@ export class Bot extends BaseEntity {
 	@Column('varchar', { length: 50, nullable: true })
 	public website?: string;
 
-	@ManyToOne(type => User, user => user.bots)
+	@ManyToOne(type => User, user => user.bots, { lazy: true })
 	@JoinColumn({ name: 'userId' })
-	public user: User;
+	public user: Promise<User>;
 
-	@OneToMany(type => Bug, bug => bug.bot)
-	public bugs: Bug[];
+	@OneToMany(type => Bug, bug => bug.bot, { lazy: true, cascade: true })
+	public bugs: Promise<Bug[]>;
 }

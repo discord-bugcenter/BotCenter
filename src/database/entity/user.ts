@@ -36,7 +36,7 @@ export class User extends BaseEntity {
 	@Column('real', { nullable: true })
 	public note?: number;
 
-	@OneToMany(type => Bot, bot => bot.user, { eager: true })
+	@OneToMany(type => Bot, bot => bot.user, { lazy: true })
 	public bots: Bot[];
 
 	public get client(): boolean {
