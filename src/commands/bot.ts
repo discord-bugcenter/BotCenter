@@ -3,7 +3,8 @@
 import { CustomClient } from '../client/index';
 import { Command } from '../models/index';
 import { __ } from '../utils/index';
-import { VERIFICATION_PERMS_ROLE } from '../utils/constants';
+import { EMOJIS, VERIFICATION_PERMS_ROLE } from '../utils/constants';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 
 
 export class BotCommand extends Command {
@@ -18,9 +19,9 @@ export class BotCommand extends Command {
 }
 
 
-// interface Arguments {
-// 	botId: string;
-// }
+interface Arguments {
+	botId: string;
+}
 class Invite extends Command {
 	public constructor(bot: CustomClient) {
 		super(bot, {
@@ -38,7 +39,22 @@ class Invite extends Command {
 		});
 	}
 
-	// public async do(interaction: CommandInteraction, args: Arguments): Promise<void> {}
+	public async do(interaction: CommandInteraction, args: Arguments): Promise<void> {
+		await this.bot.client.users.fetch(args.botId)
+			.then(async user => {
+				if (!user.bot) return this.bot.send_error(interaction, __('This is not a bot !'));
+
+				await this.bot.send_succes(interaction, {
+					title: __('Invitation of a bot :', user.tag),
+					fields: [
+						{ name: __('{0} Invitation for Bug Test', EMOJIS.badge_bughunter), value: __('[Click here to get the invitation.](https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot+applications.commands&permissions=-1&guild_id=475478167453171737&disable_guild_select=true)', user.id) },
+						{ name: __('{0} Invitation pour Bug Center', EMOJIS.badge_bughunter_gold), value: __('[Click here to get the invitation.](https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot+applications.commands&permissions=0&guild_id=595218682670481418&disable_guild_select=true)', user.id) }
+					],
+					ephemeral: true
+				});
+			})
+			.catch(() => this.bot.send_error(interaction, __("This bot doesn't exist.")));
+	}
 }
 
 

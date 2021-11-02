@@ -29,7 +29,7 @@ export abstract class Command {
 	public readonly deniedUsers: Snowflake[] = [];
 
 	private readonly logger: Logger;
-	private readonly bot: CustomClient;
+	public readonly bot: CustomClient;
 
 	public constructor(bot: CustomClient, parameters: CommandParameters) {
 		this.name = parameters.name;
@@ -102,4 +102,3 @@ export abstract class Command {
 		return undefined;
 	}
 }
-

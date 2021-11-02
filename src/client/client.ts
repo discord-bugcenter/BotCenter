@@ -1,11 +1,21 @@
-import { Client, VoiceState, Interaction, GuildMember, Message } from 'discord.js';
+import { Client, VoiceState, Interaction, GuildMember, Message, MessageComponentInteraction, BaseCommandInteraction, MessageEmbed, EmbedFieldData, ColorResolvable } from 'discord.js';
 import { Logger } from 'winston';
 import { Connection } from 'typeorm';
 import { CommandStore } from './index';
-import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger, i18n } from '../utils/index';
+import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, EMOJIS, newLogger, i18n, __ } from '../utils/index';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd, handleMessageCreate } from '../events/index';
 import * as commands from '../commands/index';
 import { connection, User as DBUser } from '../database/index';
+
+interface MessageOptions {
+	title: string;
+	description?: string;
+	fields?: EmbedFieldData[] | EmbedFieldData[][];
+	footer?: string;
+	timestamp?: number | Date;
+	color?: ColorResolvable;
+	ephemeral?: boolean;
+}
 
 export class CustomClient {
 	public client: Client;
@@ -149,5 +159,42 @@ export class CustomClient {
 
 			this.logger.debug(`${usersToSave.length} users saved in the database.`);
 		});
+	}
+
+	public async send_error(inter: BaseCommandInteraction | MessageComponentInteraction, message: string) {
+		const embed = new MessageEmbed()
+			.setColor(0x050505)
+			.setAuthor(inter.user.tag, inter.user.displayAvatarURL({ dynamic: true }))
+			.setTimestamp(new Date())
+			.setTitle(__('{0} Error', EMOJIS.error))
+			.setURL('https://discord.gg/Drbgufc')
+			.setDescription(message);
+
+		if (this.client.user) {
+			embed.setFooter(__('{0}, open source project', this.client.user.tag), this.client.user.displayAvatarURL());
+		}
+
+		await inter.reply({ embeds: [embed] });
+	}
+
+
+	public async send_succes(inter: BaseCommandInteraction | MessageComponentInteraction, messageOptions: MessageOptions) {
+		const embed = new MessageEmbed()
+			.setColor(messageOptions.color ?? 0x2f3136)
+			.setAuthor(inter.user.tag, inter.user.displayAvatarURL({ dynamic: true }))
+			.setTimestamp(messageOptions.timestamp ?? new Date())
+			.setURL('https://discord.gg/Drbgufc')
+			.setTitle(__(messageOptions.title));
+
+		if (this.client.user) {
+			embed.setFooter(__('{0}, open source project', this.client.user.tag), this.client.user.displayAvatarURL());
+		}
+		if (messageOptions.footer) embed.setFooter(messageOptions.footer);
+
+		if (messageOptions.fields) embed.setFields(...messageOptions.fields);
+		if (messageOptions.description) embed.setDescription(messageOptions.description);
+
+
+		await inter.reply({ embeds: [embed], ephemeral: messageOptions.ephemeral ?? false });
 	}
 }
