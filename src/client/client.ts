@@ -71,24 +71,24 @@ export class CustomClient {
 		this.logger.debug('Registered event: "Ready"!');
 
 		this.client.on('voiceStateUpdate', async (oldState: VoiceState, newState: VoiceState) => {
-			await handleVoiceStateUpdate(this, oldState, newState);
+			await handleVoiceStateUpdate(this, oldState, newState).catch(this.logger.error);
 		});
 		this.logger.debug('Registered event: "Voice State Update"!');
 
 		this.client.on('interactionCreate', async (interaction: Interaction) => {
-			await handleInteractionCreate(this, interaction);
+			await handleInteractionCreate(this, interaction).catch(this.logger.error);
 		});
 		this.logger.debug('Registered event: "Interaction Create"!');
 
 		this.client.on('messageCreate', async (message: Message) => {
-			await handleMessageCreate(this, message);
+			await handleMessageCreate(this, message).catch(this.logger.error);
 		});
 		this.logger.debug('Registered event: "Message Create"!');
 
 		this.client.on('guildMemberAdd', async (member: GuildMember) => {
-			await handleGuildMemberAdd(this, member);
+			await handleGuildMemberAdd(this, member).catch(this.logger.error);
 		});
-		this.logger.debug('Registered event: "Interaction Create"!');
+		this.logger.debug('Registered event: "Guild Member Add"!');
 
 		// TODO: Do event handlers and register them as listeners here
 	}

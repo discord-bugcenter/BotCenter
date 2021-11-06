@@ -1,5 +1,6 @@
 import { ButtonInteraction, Channel, CommandInteraction, Interaction, Role, User } from 'discord.js';
 import { CustomClient } from '../client';
+import { applicationCommandsError } from '../functions/commands_error_handler';
 import { handleAdministratorVote } from '../functions/recruitment_management';
 import { verificationSystem } from '../functions/verification_system';
 import { Command } from '../models/index';
@@ -55,8 +56,7 @@ export async function handleInteractionCreate(bot: CustomClient, interaction: In
 
 			await storedCommand.do(interaction, args);
 		} catch (error) {
-			bot.logger.error(error);
-			await interaction.reply({ content: __('There was an error while executing this command'), ephemeral: true });
+			await applicationCommandsError(bot, interaction, error);
 		}
 	}
 }
