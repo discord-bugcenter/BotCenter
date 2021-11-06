@@ -4,7 +4,7 @@ import { Connection } from 'typeorm';
 import { CommandStore } from './index';
 import { BUG_CENTER_GUILD_ID, EN_ROLE_ID, FR_ROLE_ID, newLogger, i18n } from '../utils/index';
 import { handleInteractionCreate, handleReady, handleVoiceStateUpdate, handleGuildMemberAdd, handleMessageCreate } from '../events/index';
-import { GrandParentCommandExemple } from '../commands/index';
+import * as commands from '../commands/index';
 import { connection, User as DBUser } from '../database/index';
 
 export class CustomClient {
@@ -96,8 +96,26 @@ export class CustomClient {
 	private async _registerCommands(): Promise<void> {
 		this.logger.debug('Registering commands...');
 
-		const command = new GrandParentCommandExemple(this);
-		await this.store.setCommand(command.name, command);
+		const allCommands = [
+			commands.Ban,
+			commands.BotCommand,
+			commands.Bugs,
+			commands.Buy,
+			commands.Kick,
+			commands.Manage,
+			commands.Mute,
+			commands.Pay,
+			commands.Profil,
+			commands.Suggest,
+			commands.Ticket,
+			commands.Top,
+			commands.UnMute,
+		];
+
+		for (const commandObject of allCommands) {
+			const command = new commandObject(this);
+			await this.store.setCommand(command.name, command);
+		}
 	}
 
 	public async connect(): Promise<void> {

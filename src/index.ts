@@ -5,5 +5,5 @@ if (!process.env.BOT_TOKEN || !process.env.POSTGRES_PASSWORD) {
 	process.exit();
 }
 
-const client: CustomClient = new CustomClient(process.env.BOT_TOKEN, false, false);
+const client: CustomClient = new CustomClient(process.env.BOT_TOKEN, true, true);
 void client.connect();
